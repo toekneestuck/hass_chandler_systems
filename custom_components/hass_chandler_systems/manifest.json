@@ -15,7 +15,8 @@
   "codeowners": ["@toekneestuck"],
   "config_flow": true,
   "dependencies": ["bluetooth", "bluetooth_adapters"],
-  "documentation": "https://www.home-assistant.io/integrations/chandler_systems",
-  "iot_class": "local_push",
+  "documentation": "https://github.com/toekneestuck/hass_chandler_systems",
+  "issue_tracker": "https://github.com/toekneestuck/hass_chandler_systems/issues",
+  "iot_class": "local_polling",
   "quality_scale": "bronze"
 }
