@@ -165,6 +165,21 @@
       "salt_tank_remaining": {
         "name": "Salt remaining"
       },
+      "brine_tank_width": {
+        "name": "Brine tank width"
+      },
+      "brine_tank_fill_height": {
+        "name": "Brine tank fill height"
+      },
+      "brine_tank_refill_time": {
+        "name": "Brine tank refill time"
+      },
+      "brine_tank_salt_capacity": {
+        "name": "Brine tank salt capacity"
+      },
+      "brine_tank_remaining_salt": {
+        "name": "Brine remaining salt"
+      },
       "serial_a": {
         "name": "Serial number A"
       },

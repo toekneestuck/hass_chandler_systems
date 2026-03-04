@@ -14,6 +14,7 @@ from homeassistant.const import (
     PERCENTAGE,
     EntityCategory,
     UnitOfElectricPotential,
+    UnitOfLength,
     UnitOfMass,
     UnitOfTime,
     UnitOfVolume,
@@ -47,8 +48,11 @@ from .const import (
     KEY_REGEN_TIME_TYPE,
     KEY_RESERVE_CAPACITY,
     KEY_RESERVE_CAPACITY_GALLONS,
-    KEY_SALT_TANK_CAPACITY,
-    KEY_SALT_TANK_REMAINING,
+    KEY_BRINE_TANK_WIDTH,
+    KEY_BRINE_TANK_FILL_HEIGHT,
+    KEY_BRINE_TANK_REFILL_TIME,
+    KEY_BRINE_TANK_SALT_CAPACITY,
+    KEY_BRINE_TANK_REMAINING_SALT,
     KEY_SERIAL_A,
     KEY_SERIAL_B,
     KEY_TOTAL_GALLONS,
@@ -68,6 +72,13 @@ def divide_by_100(value: Any) -> Any:
     """Divide a raw value by 100 for display."""
     try:
         return round(float(value) / 100, 2)
+    except (ValueError, TypeError):
+        return value
+
+def divide_by_10_int(value: Any) -> Any:
+    """Divide a raw value by 10 for display."""
+    try:
+        return round(float(value) / 10)
     except (ValueError, TypeError):
         return value
 
@@ -144,6 +155,7 @@ VALUE_TRANSFORMS: dict[str, Callable[[Any], Any]] = {
     KEY_REGEN_STATE: _map_regen_state,
     KEY_REGEN_TIME_TYPE: _map_regen_time_type,
     KEY_VALVE_ERROR: _map_valve_error,
+    KEY_BRINE_TANK_REMAINING_SALT: divide_by_10_int,
 }
 
 SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
@@ -198,18 +210,39 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfTime.MINUTES,
         state_class=SensorStateClass.MEASUREMENT,
     ),
+
+    # Brine tank sensors.
     SensorEntityDescription(
-        key=KEY_SALT_TANK_CAPACITY,
-        translation_key="salt_tank_capacity",
+        key=KEY_BRINE_TANK_WIDTH,
+        translation_key="brine_tank_width",
+        native_unit_of_measurement=UnitOfLength.INCHES,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=KEY_BRINE_TANK_FILL_HEIGHT,
+        translation_key="brine_tank_fill_height",
+        native_unit_of_measurement=UnitOfLength.INCHES,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=KEY_BRINE_TANK_REFILL_TIME,
+        translation_key="brine_tank_refill_time",
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=KEY_BRINE_TANK_SALT_CAPACITY,
+        translation_key="brine_tank_salt_capacity",
         native_unit_of_measurement=UnitOfMass.POUNDS,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
-        key=KEY_SALT_TANK_REMAINING,
-        translation_key="salt_tank_remaining",
+        key=KEY_BRINE_TANK_REMAINING_SALT,
+        translation_key="brine_tank_remaining_salt",
         native_unit_of_measurement=UnitOfMass.POUNDS,
         state_class=SensorStateClass.MEASUREMENT,
     ),
+
     SensorEntityDescription(
         key=KEY_DAY_OVERRIDE,
         translation_key="day_override",

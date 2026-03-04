@@ -71,10 +71,13 @@ KEY_REGEN_SOAK_MODE = "dps"  # Boolean (0-1), in brine soak — W
 KEY_REGEN_SOAK_TIMER = "drst"  # Minutes remaining in brine soak — W
 KEY_PREFILL_ENABLED = "dpe"  # Boolean (0-1) — RW
 KEY_PREFILL_DURATION = "dpd"  # Hours (1-4) — RW
-# Note: the upstream API docs incorrectly list "dpd" for the salt keys below.
-# The actual device keys follow the standard naming convention (d + st/sr).
-KEY_SALT_TANK_CAPACITY = "dst"  # Pounds, brine tank capacity — W
-KEY_SALT_TANK_REMAINING = "dsr"  # Pounds, salt left in tank — RW
+
+# Brine tank data keys.
+KEY_BRINE_TANK_WIDTH = "dbtw"  # Inches, brine tank width (diameter) - RW
+KEY_BRINE_TANK_FILL_HEIGHT = "dbth"  # Inches, brine tank fill height - RW
+KEY_BRINE_TANK_REFILL_TIME = "dbrt"  # Minutes, brine tank refill time - R
+KEY_BRINE_TANK_SALT_CAPACITY = "dbts"  # Pounds, brine tank capacity - R
+KEY_BRINE_TANK_REMAINING_SALT = "dbtr"  # Pounds, brine left in tank - RW
 
 # Global data keys (prefix: g)
 KEY_VALVE_STATUS = "gvs"  # Bit flags — W
@@ -169,8 +172,11 @@ SOFTENER_ONLY_KEYS: frozenset[str] = frozenset(
         KEY_TOTAL_GALLONS_REMAINING,
         KEY_WATER_HARDNESS,
         KEY_REGEN_SOAK_TIMER,
-        KEY_SALT_TANK_CAPACITY,
-        KEY_SALT_TANK_REMAINING,
+        KEY_BRINE_TANK_WIDTH,
+        KEY_BRINE_TANK_FILL_HEIGHT,
+        KEY_BRINE_TANK_REFILL_TIME,
+        KEY_BRINE_TANK_SALT_CAPACITY,
+        KEY_BRINE_TANK_REMAINING_SALT,
         KEY_PREFILL_DURATION,
         KEY_RESERVE_CAPACITY,
         KEY_RESERVE_CAPACITY_GALLONS,
