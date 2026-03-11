@@ -75,6 +75,21 @@
       "battery_level": {
         "name": "Battery level"
       },
+      "brine_tank_fill_height": {
+        "name": "Brine tank fill height"
+      },
+      "brine_tank_refill_time": {
+        "name": "Brine tank refill time"
+      },
+      "brine_tank_remaining_salt": {
+        "name": "Brine remaining salt"
+      },
+      "brine_tank_salt_capacity": {
+        "name": "Brine tank salt capacity"
+      },
+      "brine_tank_width": {
+        "name": "Brine tank width"
+      },
       "chlorine_pulses": {
         "name": "Chlorine pulses"
       },
@@ -165,21 +180,6 @@
       "salt_tank_remaining": {
         "name": "Salt remaining"
       },
-      "brine_tank_width": {
-        "name": "Brine tank width"
-      },
-      "brine_tank_fill_height": {
-        "name": "Brine tank fill height"
-      },
-      "brine_tank_refill_time": {
-        "name": "Brine tank refill time"
-      },
-      "brine_tank_salt_capacity": {
-        "name": "Brine tank salt capacity"
-      },
-      "brine_tank_remaining_salt": {
-        "name": "Brine remaining salt"
-      },
       "serial_a": {
         "name": "Serial number A"
       },
@@ -226,6 +226,12 @@
       "water_used_today": {
         "name": "Water used today"
       }
+    }
+  },
+  "issues": {
+    "cannot_connect": {
+      "description": "Could not establish connection to device at `{address}`. It may need to be power cycled if it is not responding.",
+      "title": "Cannot connect to device"
     }
   }
 }

@@ -22,7 +22,11 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import CoreState, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.device_registry import DeviceInfo
-from homeassistant.helpers.issue_registry import IssueSeverity, async_create_issue
+from homeassistant.helpers.issue_registry import (
+    IssueSeverity,
+    async_create_issue,
+    async_delete_issue,
+)
 from homeassistant.helpers.update_coordinator import UpdateFailed
 from homeassistant.util import dt as dt_util
 
@@ -77,6 +81,7 @@ class ChandlerSystemsCoordinator(ActiveBluetoothDataUpdateCoordinator[dict[str, 
         self._api: ChandlerSystemsAPI | None = None
         self._ready_event = asyncio.Event()
         self._data_received_event = asyncio.Event()
+        self.last_connection_successful = True
 
     @callback
     def _needs_poll(
@@ -112,33 +117,12 @@ class ChandlerSystemsCoordinator(ActiveBluetoothDataUpdateCoordinator[dict[str, 
             await old_api.disconnect()
 
         api = ChandlerSystemsAPI(self.hass, self.address)
-
-        try:
-            await api.connect(service_info.device)
-        except ChandlerSystemsConnectionError as err:
-            raise UpdateFailed(f"Failed to connect to {self.address}: {err}") from err
-
-        # Register push callback before authenticating,
-        # because the auth response includes a data payload
         api.register_callback(self._handle_push_data)
         self._api = api
 
         try:
+            await api.connect(service_info.device)
             await api.authenticate(self.auth_key)
-        except ChandlerSystemsAuthenticationError as err:
-            raise ConfigEntryAuthFailed(f"Incorrect API key format: {err}") from err
-        except ChandlerSystemsConnectionError as err:
-            async_create_issue(
-                self.hass,
-                DOMAIN,
-                "cannot_connect",
-                is_fixable=False,
-                severity=IssueSeverity.WARNING,
-                translation_key="cannot_connect",
-            )
-            raise UpdateFailed(f"Failed to connect to {self.address}: {err}") from err
-
-        try:
             # Stay connected while data keeps arriving.
             # Disconnect after IDLE_DISCONNECT_TIMEOUT seconds of silence,
             # or after MAX_CONNECTION_TIMEOUT seconds total (safety cap),
@@ -170,6 +154,24 @@ class ChandlerSystemsCoordinator(ActiveBluetoothDataUpdateCoordinator[dict[str, 
                         # Idle timeout — no data and no disconnect signal.
                         break
                     # data_task completed — loop and wait for more data.
+
+            self.last_connection_successful = True
+            async_delete_issue(self.hass, DOMAIN, "cannot_connect")
+        except ChandlerSystemsAuthenticationError as err:
+            raise ConfigEntryAuthFailed(f"Incorrect API key format: {err}") from err
+        except ChandlerSystemsConnectionError as err:
+            self.last_connection_successful = False
+            self.async_update_listeners()
+            async_create_issue(
+                self.hass,
+                DOMAIN,
+                "cannot_connect",
+                is_fixable=False,
+                severity=IssueSeverity.WARNING,
+                translation_key="cannot_connect",
+                translation_placeholders={"address": self.address},
+            )
+            raise UpdateFailed(f"Failed to connect to {self.address}: {err}") from err
         except TimeoutError:
             _LOGGER.debug(
                 "Max connection time reached for %s, disconnecting",

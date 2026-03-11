@@ -25,6 +25,11 @@ from .const import (
     KEY_AERATION_DAYS,
     KEY_AVG_WATER_USED,
     KEY_BATTERY_LEVEL,
+    KEY_BRINE_TANK_FILL_HEIGHT,
+    KEY_BRINE_TANK_REFILL_TIME,
+    KEY_BRINE_TANK_REMAINING_SALT,
+    KEY_BRINE_TANK_SALT_CAPACITY,
+    KEY_BRINE_TANK_WIDTH,
     KEY_CHLORINE_PULSES,
     KEY_CURRENT_DAY_OVERRIDE,
     KEY_DAY_OVERRIDE,
@@ -48,11 +53,6 @@ from .const import (
     KEY_REGEN_TIME_TYPE,
     KEY_RESERVE_CAPACITY,
     KEY_RESERVE_CAPACITY_GALLONS,
-    KEY_BRINE_TANK_WIDTH,
-    KEY_BRINE_TANK_FILL_HEIGHT,
-    KEY_BRINE_TANK_REFILL_TIME,
-    KEY_BRINE_TANK_SALT_CAPACITY,
-    KEY_BRINE_TANK_REMAINING_SALT,
     KEY_SERIAL_A,
     KEY_SERIAL_B,
     KEY_TOTAL_GALLONS,
@@ -74,6 +74,7 @@ def divide_by_100(value: Any) -> Any:
         return round(float(value) / 100, 2)
     except (ValueError, TypeError):
         return value
+
 
 def divide_by_10_int(value: Any) -> Any:
     """Divide a raw value by 10 for display."""
@@ -210,7 +211,6 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfTime.MINUTES,
         state_class=SensorStateClass.MEASUREMENT,
     ),
-
     # Brine tank sensors.
     SensorEntityDescription(
         key=KEY_BRINE_TANK_WIDTH,
@@ -242,7 +242,6 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfMass.POUNDS,
         state_class=SensorStateClass.MEASUREMENT,
     ),
-
     SensorEntityDescription(
         key=KEY_DAY_OVERRIDE,
         translation_key="day_override",

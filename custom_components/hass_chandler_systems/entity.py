@@ -21,6 +21,11 @@ class ChandlerSystemsEntity(
         """Initialize the entity."""
         super().__init__(coordinator)
 
+    @property
+    def available(self) -> bool:
+        """Return True if the entity is available."""
+        return super().available and self.coordinator.last_connection_successful
+
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
