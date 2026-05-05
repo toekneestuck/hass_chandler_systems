@@ -2,7 +2,7 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
-A [Home Assistant](https://www.home-assistant.io/) custom component for monitoring and controlling [Chandler Systems](https://www.chandlersystems.com/) Signature-series water treatment devices over Bluetooth Low Energy (BLE).
+A [Home Assistant](https://www.home-assistant.io/) custom component for monitoring and controlling [Chandler Systems](https://www.chandlersystemsinc.com/) Signature-series water treatment devices over Bluetooth Low Energy (BLE).
 
 ## Features
 
